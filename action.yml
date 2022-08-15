@@ -1,0 +1,20 @@
+# action.yml
+name: 'Dockpin'
+description: 'Check if pinned Docker base image can be updated'
+inputs:
+  dockerfilePath:
+    description: 'Path to Dockerfile to check'
+    required: false
+    default: 'Dockerfile'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - '-v'
+    - '/var/run/docker.sock:/var/run/docker.sock'
+    - '-v'
+    - '/github/workspace:/source'
+    - 'docker'
+    - 'check'
+    - '-f'
+    - '/source/${{ inputs.dockerfilePath }}'
