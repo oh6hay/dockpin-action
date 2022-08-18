@@ -1,0 +1,17 @@
+# action.yml
+name: 'Dockpin'
+description: 'Check if pinned Docker base image can be updated'
+inputs:
+  dockerfilePath:
+    description: 'Name of Dockerfile to check'
+    required: false
+    default: 'Dockerfile'
+  basepath:
+    description: 'Base path to the Dockerfile to check'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - '/bin/entrypoint.sh'
+    - '${{ inputs.dockerfilePath }}'
