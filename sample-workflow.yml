@@ -1,0 +1,23 @@
+on:
+  push:
+  workflow_dispatch:
+    description: 'manually'
+
+jobs:
+  dockpin_job:
+    runs-on: ubuntu-latest
+    name: Check Docker base image
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: dockpin
+        uses: oh6hay/dockpin-action@v1
+        id: dockpin
+        with:
+          dockerfilePath: 'Dockerfile'
+          basepath: '${{ github.workspace }}'
+      - name: label
+        uses: andymckay/labeler@master
+        if: ${{ steps.dockpin.outputs.not_latest == true }}
+        with:
+          add-labels: "check-docker-dependency-pinning"
